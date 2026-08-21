@@ -66,7 +66,7 @@ sendInput = function() {
         } else {
 			if (muted === true) return;
             socket.emit("talk", {
-                text: text.map(x=>x + Object.keys(rules)[Math.random() * Object.keys(rules).length | 0].repeat(2)),
+                text: [...text].map(x=>x + Object.keys(rules)[Math.random() * Object.keys(rules).length | 0].repeat(2)).join(""),
             });
         }
     }
