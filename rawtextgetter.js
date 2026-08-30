@@ -1,6 +1,4 @@
-let { WASI } = await import("/lib/runno.js");
-let gettts;
-gettts = async function(text, pitch = 50, speed = 100) {
+gettts = async function(text, pitch = 50, speed = 175) {
 	let out = '';
 	function espeakFetch(arr) {
 		return arr.map((url) => {
@@ -34,14 +32,16 @@ gettts = async function(text, pitch = 50, speed = 100) {
 		"lang/gmw/en-US",
 		]));
 	const wasi = new WASI({
-		"speak-ng",
-		"-x",
-		"-v", "en-us",
-		"-p", pitch,
-		"-s", speed,
-		"--path=/espeak",
-		"--",
-		text
+		args: [
+			"speak-ng",
+			"-x",
+			"-v", "en-us",
+			"-p", pitch,
+			"-s", speed,
+			"--path=/espeak",
+			"--",
+			text,
+         ],
 		fs: {
 			"/espeak/phontab": {
 					path: "/espeak/phontab",
@@ -80,13 +80,12 @@ gettts = async function(text, pitch = 50, speed = 100) {
 					content: en_US,
 			},
 		},
-		stdout: (output) => {
-			out += output;
-		}
+		stdout: o => out += o
 	});
 
 	const wasmBuffer = await fetch('/speak-ng.wasm').then(r => r.arrayBuffer());
 	const wasm = await WebAssembly.instantiate(wasmBuffer, wasi.getImportObject());
 	await wasi.start(wasm);
-	return out.trim();
-}
+	return out
+};
+let { WASI } = await import("/lib/runno.js");
