@@ -88,3 +88,4 @@ gettts = async function(text) {
 	await wasi.start(wasm);
 	return out
 };
+let { WASI } = await import("/lib/runno.js");
