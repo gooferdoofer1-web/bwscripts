@@ -1,4 +1,4 @@
-gettts = async function(text, pitch = 50, speed = 175) {
+gettts = async function(text) {
 	let out = '';
 	function espeakFetch(arr) {
 		return arr.map((url) => {
@@ -36,8 +36,8 @@ gettts = async function(text, pitch = 50, speed = 175) {
 			"speak-ng",
 			"-x",
 			"-v", "en-us",
-			"-p", pitch,
-			"-s", speed,
+			"-p", "50",
+			"-s", "100",
 			"--path=/espeak",
 			"--",
 			text,
@@ -88,4 +88,3 @@ gettts = async function(text, pitch = 50, speed = 175) {
 	await wasi.start(wasm);
 	return out
 };
-let { WASI } = await import("/lib/runno.js");
